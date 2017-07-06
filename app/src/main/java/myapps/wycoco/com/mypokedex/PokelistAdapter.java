@@ -42,7 +42,7 @@ public class PokelistAdapter extends RecyclerView.Adapter<PokelistAdapter.ViewHo
     public void onBindViewHolder(PokelistAdapter.ViewHolder holder, int position) {
         Glide.with(mContext).load(pokemonsters.get(position).getPokeImage()).into(holder.pokemonImage);
         holder.pokemonName.setText(pokemonsters.get(position).getPokeName());
-        holder.pokemonID.setText(pokemonsters.get(position).getPokeID());
+//        holder.pokemonID.setText(pokemonsters.get(position).getPokeID());
     }
 
     @Override
@@ -55,7 +55,6 @@ public class PokelistAdapter extends RecyclerView.Adapter<PokelistAdapter.ViewHo
         ImageView pokemonImage, pokeballImage;
         TextView pokemonName, pokemonID;
         LinearLayout linearLayout;
-        int position;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -71,8 +70,7 @@ public class PokelistAdapter extends RecyclerView.Adapter<PokelistAdapter.ViewHo
                 public void onClick(View view) {
 
                     Intent n = new Intent(mContext, PokemonInformationActivity.class);
-                    n.putExtra("pokeImage", pokemonsters.get(getAdapterPosition()).getPokeImage());
-                    n.putExtra("pokeName", pokemonsters.get(getAdapterPosition()).getPokeName());
+                    n.putExtra("pokeID" , + pokemonsters.get(getAdapterPosition()).getPokeID());
                     n.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(n);
 

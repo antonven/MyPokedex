@@ -6,7 +6,7 @@ package myapps.wycoco.com.mypokedex;
 
 public class Pokemonster {
 
-    private String pokeID;
+    private int pokeID;
     private String pokeName;
     private String pokeType;
     private String pokeHeight;
@@ -19,7 +19,7 @@ public class Pokemonster {
 
 
 
-    public Pokemonster( String pokeName,  String pokeImage, String pokeID, String pokeType, String pokeHeight, String pokeWeight) {
+    public Pokemonster( String pokeName,  String pokeImage, int pokeID, String pokeType, String pokeHeight, String pokeWeight) {
         this.pokeID = pokeID;
         this.pokeName = pokeName;
         this.pokeType = pokeType;
@@ -30,11 +30,11 @@ public class Pokemonster {
 
     }
 
-    public String getPokeID() {
+    public int getPokeID() {
         return pokeID;
     }
 
-    public void setPokeID(String pokeID) {
+    public void setPokeID(int pokeID) {
         this.pokeID = pokeID;
     }
 

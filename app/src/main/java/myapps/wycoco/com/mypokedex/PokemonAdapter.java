@@ -47,6 +47,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         holder.pokeType.setText(pokemonsters.get(position).getPokeType());
         holder.pokeHeight.setText(pokemonsters.get(position).getPokeHeight());
         holder.pokeWeight.setText(pokemonsters.get(position).getPokeWeight());
+//        holder.pokeID.setText(pokemonsters.get(position).getPokeID());
 
     }
 
@@ -57,8 +58,8 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView pokemonBigImage;
-        TextView pokemonBigName, pokeType, pokeHeight, pokeWeight;
+        ImageView pokemonBigImage, pokeBall;
+        TextView pokemonBigName, pokeType, pokeHeight, pokeWeight, pokeID;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -68,6 +69,9 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             pokeType = (TextView)itemView.findViewById(R.id.pokeType);
             pokeHeight = (TextView)itemView.findViewById(R.id.pokeHeight);
             pokeWeight = (TextView)itemView.findViewById(R.id.pokeWeight);
+            pokeBall = (ImageView)itemView.findViewById(R.id.pokeball2);
+            pokeID = (TextView)itemView.findViewById(R.id.pokeNumber);
         }
+
     }
 }

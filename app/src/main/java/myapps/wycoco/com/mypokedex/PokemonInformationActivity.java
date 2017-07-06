@@ -1,6 +1,7 @@
 package myapps.wycoco.com.mypokedex;
 
 import android.content.Intent;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,12 +47,13 @@ public class PokemonInformationActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
         recView2 = (RecyclerView)findViewById(R.id.recView2);
         Intent intent = getIntent();
-        String pokeImage = intent.getStringExtra("pokeImage");
-        String pokeName = intent.getStringExtra("pokeName");
-        JsonObjectRequest();
+        String id = intent.getStringExtra("pokeID");
+        int pokeID = intent.getIntExtra("pokeID", 0);
+        JsonObjectRequest(pokeID);
+//
     }
 
-    private void JsonObjectRequest(){
+    private void JsonObjectRequest(final int pokeID){
         Cache cache = new DiskBasedCache(getApplicationContext().getCacheDir(), 1024 * 1024);
         Network network = new BasicNetwork(new HurlStack());
         requestQueue = new RequestQueue(cache, network);
@@ -64,65 +66,67 @@ public class PokemonInformationActivity extends AppCompatActivity {
 
                         try {
                             JSONArray jsonArray = response.getJSONArray("results");
-                            for(int i = 0; i< jsonArray.length(); i++){
-                                JSONObject pokemon = jsonArray.getJSONObject(i);
-                                String pokeURL = pokemon.getString("url");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                if (i == pokeID) {
+                                    JSONObject pokemon = jsonArray.getJSONObject(i);
+                                    String pokeURL = pokemon.getString("url");
 
-                                final Pokemonster pokemonster = new Pokemonster();
-                                pokemonster.setPokeName(pokemon.getString("name").toUpperCase());
 
-                                JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, pokeURL,
-                                        new Response.Listener<JSONObject>() {
-                                            @Override
-                                            public void onResponse(JSONObject response) {
+                                    final Pokemonster pokemonster = new Pokemonster();
+                                    pokemonster.setPokeName(pokemon.getString("name").toUpperCase());
+//                                    pokemonster.setPokeID(i);
 
-                                                try {
+                                    JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, pokeURL,
+                                            new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
 
-                                                    Log.e("kirs", "naabot");
-                                                    JSONObject jsonObject2 = response.getJSONObject("sprites");
-                                                    JSONArray jsonArray1 = response.getJSONArray("types");
-//                                                    JSONObject jsonObject5 = response.getJSONObject("Height");
-//                                                    String pokeId = jsonObject3.toString();
-                                                    String picUrl = jsonObject2.getString("front_default");
-                                                    for(int o = 0; o < jsonArray1.length(); o++){
-                                                        JSONObject pokemonmon = jsonArray1.getJSONObject(o);
+                                                    try {
+
+                                                        Log.e("kirs", "naabot");
+                                                        JSONObject jsonObject2 = response.getJSONObject("sprites");
+                                                        JSONArray jsonArray1 = response.getJSONArray("types");
+                                                        String picUrl = jsonObject2.getString("front_default");
+
+                                                        for (int o = 0; o < jsonArray1.length(); o++) {
+                                                            JSONObject pokemonmon = jsonArray1.getJSONObject(o);
 
                                                             JSONObject jsonObject4 = pokemonmon.getJSONObject("type");
                                                             String pokeType = jsonObject4.getString("name").toUpperCase();
                                                             pokemonster.setPokeType(pokeType);
-                                                        Log.e("Me", "naabot nasad diri");
+                                                            Log.e("Me", pokemonster.getPokeType());
 
 
+                                                        }
 
+                                                        pokemonster.setPokeHeight(response.getString("height"));
+                                                        pokemonster.setPokeWeight(response.getString("weight"));
+                                                        pokemonster.setPokeImage(picUrl);
+
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
                                                     }
-//                                                    pokemonster.setPokeID(pokeId);
-                                                    pokemonster.setPokeHeight(response.getString("height"));
-                                                    pokemonster.setPokeWeight(response.getString("weight"));
-                                                    pokemonster.setPokeImage(picUrl);
-
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
                                                 }
-                                            }
-                                        }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                    }
-                                });
-                                requestQueue.add(jsonObjectRequest2);
-                                pokemons.add(pokemonster);
+                                            }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                        }
+                                    });
+                                    requestQueue.add(jsonObjectRequest2);
+                                    pokemons.add(pokemonster);
+                                    Log.e("ASD", "nnaabot najod diri");
+                                    pokemonAdapter = new PokemonAdapter(getApplicationContext(), pokemons);
+                                    pokemonAdapter.notifyDataSetChanged();
+                                    RecyclerView.LayoutManager lm = new LinearLayoutManager(getApplicationContext());
+                                    recView2.setLayoutManager(lm);
+                                    recView2.setAdapter(pokemonAdapter);
+                                }
 
-                                pokemonAdapter = new PokemonAdapter(getApplicationContext(), pokemons);
-                                RecyclerView.LayoutManager lm = new LinearLayoutManager(getApplicationContext());
-                                recView2.setLayoutManager(lm);
-                                recView2.setAdapter(pokemonAdapter);
+                            }
+                            }catch(JSONException e){
+                                e.printStackTrace();
                             }
 
-
-
-                        }catch(JSONException e){
-                            e.printStackTrace();
-                        }
                     }
                 },
                 new Response.ErrorListener() {

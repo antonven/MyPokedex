@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ public class PokedexActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     ArrayList<Pokemonster> pokemons = new ArrayList<>();
     EndlessRecyclerViewScrollListener recyclerViewScrollListener;
+    ProgressBar progBar;
 //    TextView tv;
 
     @Override
@@ -48,8 +51,9 @@ public class PokedexActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
         recView = (RecyclerView)findViewById(R.id.recView);
+        progBar = (ProgressBar)findViewById(R.id.progBar);
 
-        Toast.makeText(PokedexActivity.this, "asdasdadsd", Toast.LENGTH_LONG).show();
+        Toast.makeText(PokedexActivity.this, "Welcome to your pokedex!", Toast.LENGTH_LONG).show();
 
         JsonObjectRequest();
 
@@ -82,6 +86,7 @@ public class PokedexActivity extends AppCompatActivity {
                                 String pokeURL = pokemon.getString("url");
 
                                 final Pokemonster pokemonster = new Pokemonster();
+                                pokemonster.setPokeID(i);
                                 pokemonster.setPokeName(pokemonName);
 
                                 JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, pokeURL,
@@ -90,11 +95,12 @@ public class PokedexActivity extends AppCompatActivity {
                                             public void onResponse(JSONObject response) {
 
                                                 try {
+                                                    if(response != null){
+                                                        progBar.setVisibility(View.GONE);
+                                                    }
                                                     JSONObject jsonObject2 = response.getJSONObject("sprites");
-//                                                    JSONObject jsonObject3 = response.getJSONObject("id");
                                                     String picUrl = jsonObject2.getString("front_default");
-//                                                    String pokeId = jsonObject3.toString();
-//                                                    pokemonster.setPokeID(pokeId);
+
                                                     pokemonster.setPokeImage(picUrl);
 
                                                 } catch (JSONException e) {

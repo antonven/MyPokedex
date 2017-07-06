@@ -15,21 +15,37 @@
             android:layout_weight="1">
 
             <ImageView
+                android:id="@+id/pokeball2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/pokeball" />
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:id="@+id/pokeNumber"
+                android:layout_below="@+id/pokeball2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <ImageView
+                android:id="@+id/pokemonBigImage"
                 android:layout_width="250dp"
                 android:layout_height="300dp"
-                android:layout_centerInParent="true"
-                android:id="@+id/pokemonBigImage" />
+                android:layout_centerInParent="true" />
 
             <TextView
                 android:id="@+id/pokemonBigName"
                 android:layout_width="250dp"
                 android:layout_height="40dp"
+                android:layout_alignBottom="@+id/pokemonBigImage"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
                 android:text="POKEMON NAME"
                 android:textSize="26sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_alignBottom="@+id/pokemonBigImage"
-                android:layout_centerHorizontal="true" />
+                android:textStyle="bold" />
 
 
         </RelativeLayout>
